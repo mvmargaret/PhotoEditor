@@ -19,6 +19,17 @@ class AuthManager: ObservableObject {
 	@Published var email = ""
 	@Published var password = ""
 	
+	init() {
+		  Auth.auth().addStateDidChangeListener() { auth, user in
+			  if user != nil {
+				  self.authState = .signedIn
+				  print("Auth state changed, is signed in")
+			  } else {
+				  self.authState = .signedOut
+				  print("Auth state changed, is signed out")
+			  }
+		  }
+	  }
 	
 	
 	func login() {
@@ -41,8 +52,14 @@ class AuthManager: ObservableObject {
 		}
 	}
 	
-	func logOut() {
-		
+	func signOut() {
+		let firebaseAuth = Auth.auth()
+		do {
+		  try firebaseAuth.signOut()
+			print("User signed out")
+		} catch let signOutError as NSError {
+		  print("Error signing out: %@", signOutError)
+		}
 	}
 	
 	func resetPassword() {

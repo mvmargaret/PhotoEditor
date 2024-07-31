@@ -8,9 +8,16 @@
 import SwiftUI
 
 struct PhotoEditorView: View {
+	@EnvironmentObject var authManager: AuthManager
     var body: some View {
-        Text("There will be a photo editor view")
-			.foregroundStyle(.red)
+		VStack {
+			Text("There will be a photo editor view")
+				.foregroundStyle(.red)
+			
+			Button("Sign out") {
+				authManager.signOut()
+			}
+		}
     }
 }
 

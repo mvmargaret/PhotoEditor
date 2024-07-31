@@ -18,11 +18,14 @@ struct LogInWithEmailView: View {
 					SecureField("Password", text: $authManager.password)
 				}
 				
-				Section {
 					Button("Sign in") {
 						authManager.login()
 					}
+				
+				Button("Sign out") {
+					authManager.signOut()
 				}
+				
 			}
 		}
     }
