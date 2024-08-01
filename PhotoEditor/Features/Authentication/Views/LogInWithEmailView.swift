@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LogInWithEmailView: View {
 	@EnvironmentObject var authManager: AuthManager
+	@State private var currentError: Error? = nil
+	@State private var isErrorPresented = false
 	
     var body: some View {
 		VStack {
@@ -19,15 +21,26 @@ struct LogInWithEmailView: View {
 				}
 				
 					Button("Sign in") {
-						authManager.login()
+						authManager.login { result in
+							switch result {
+							case .success():
+								print("success")
+							case .failure(let error):
+								print("Error with sign in: \(error.localizedDescription)")
+								currentError = error
+								isErrorPresented = true
+							}
+						}
 					}
-				
-				Button("Sign out") {
-					authManager.signOut()
-				}
-				
+					.buttonBorderShape(.capsule)
+					.buttonStyle(.borderedProminent)
+					.tint(.cyan)
+					.listRowInsets(.init())
+					.listRowBackground(Color.clear)
 			}
+			
 		}
+		.errorAlert(isPresented: $isErrorPresented, message: currentError?.localizedDescription ?? "Try again later")
     }
 }
 

@@ -12,11 +12,13 @@ struct LoginView: View {
 	@EnvironmentObject var authManager: AuthManager
 	@State private var isShowLoginWithEmailView = false
 	@State private var isShowRegistrationView = false
+	@State private var isShowPasswordResetView = false
 	
     var body: some View {
 		VStack {
 			buttonLoginEmail
 			buttonCreateAccount
+			buttonResetPassword
 			
 		}
 		.padding()
@@ -26,19 +28,32 @@ struct LoginView: View {
 		.sheet(isPresented: $isShowRegistrationView) {
 			RegistrationView()
 		}
+		.sheet(isPresented: $isShowPasswordResetView) {
+			PasswordResetView()
+		}
     }
 	
 	private var buttonLoginEmail: some View {
-		Button("Sign in using email") {
-			isShowLoginWithEmailView = true
-		}
-		.buttonBorderShape(.capsule)
-		.buttonStyle(.borderedProminent)
+		MainButton(
+			title: "Войти через эл. почту",
+			action: {
+				isShowLoginWithEmailView = true
+			},
+			color: .cyan
+		)
 	}
 	
 	private var buttonCreateAccount: some View {
-		Button("Create an account") {
-			isShowRegistrationView = true
+		MainButton(
+			title: "Создать аккаунт",
+			action: {isShowRegistrationView = true},
+			color: .blue
+		)
+	}
+	
+	private var buttonResetPassword: some View {
+		Button("Reset password") {
+			isShowPasswordResetView = true
 		}
 	}
 	
