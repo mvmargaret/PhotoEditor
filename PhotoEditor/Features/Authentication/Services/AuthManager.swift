@@ -47,6 +47,7 @@ class AuthManager: ObservableObject {
 			if error != nil {
 				print(error?.localizedDescription ?? "")
 			} else {
+				self.sendVerificationEmail()
 				print("successfully created a new user with email: \(self.email), password: \(self.password)")
 			}
 		}
@@ -64,5 +65,11 @@ class AuthManager: ObservableObject {
 	
 	func resetPassword() {
 		
+	}
+	
+	func sendVerificationEmail() {
+		Auth.auth().currentUser?.sendEmailVerification { error in
+			print("Coudnt send the link because the email is incorrect.")
+		}
 	}
 }
