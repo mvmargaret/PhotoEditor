@@ -30,26 +30,34 @@ struct PasswordResetView: View {
 		
     }
 	private var resetPassword: some View {
-		VStack(alignment: .center) {
-			Text("To reset password, enter your email")
-			TextField("Enter your email", text: $authManager.email)
-			
-			Button("Continue") {
-				authManager.resetPassword { result in
-					switch result {
-					case .success():
-						withAnimation {
-							isResetPasswordEmailSent = true
-						}
-					case .failure(let error):
-						isErrorPresented = true
-						currentError = error
-						print("Error with reset password: \(error.localizedDescription)")
-					}
-				}
+		Form {
+			Section("Восстановление пароля") {
+				TextField("Введите эл. почту", text: $authManager.email)
 			}
+			
+			Section {
+				MainButton(
+					title: "Продолжить",
+					action: {
+						authManager.resetPassword { result in
+							switch result {
+							case .success():
+								withAnimation {
+									isResetPasswordEmailSent = true
+								}
+							case .failure(let error):
+								isErrorPresented = true
+								currentError = error
+								print("Error with reset password: \(error.localizedDescription)")
+							}
+						}
+					},
+					color: .cyan
+				)
+			}
+			.listRowInsets(.init())
+			.listRowBackground(Color.clear)
 		}
-		.padding()
 	}
 	
 	private var instructionsAfterResetPasswordEmailSent: some View {

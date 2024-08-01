@@ -16,6 +16,7 @@ struct PhotoEditorView: View {
 			
 			Button("Sign out") {
 				authManager.signOut()
+				authManager.googleSignOut()
 			}
 		}
     }

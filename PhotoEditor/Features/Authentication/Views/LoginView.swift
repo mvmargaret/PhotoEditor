@@ -11,15 +11,17 @@ import FirebaseAuth
 struct LoginView: View {
 	@EnvironmentObject var authManager: AuthManager
 	@State private var isShowLoginWithEmailView = false
+//	@State private var isShowSignInWithGoogleView = false
 	@State private var isShowRegistrationView = false
 	@State private var isShowPasswordResetView = false
 	
     var body: some View {
 		VStack {
+			buttonSignInGoogle
 			buttonLoginEmail
-			buttonCreateAccount
 			buttonResetPassword
-			
+			Text("или")
+			buttonCreateAccount
 		}
 		.padding()
 		.sheet(isPresented: $isShowLoginWithEmailView) {
@@ -52,9 +54,17 @@ struct LoginView: View {
 	}
 	
 	private var buttonResetPassword: some View {
-		Button("Reset password") {
+		Button("Не помните пароль?") {
 			isShowPasswordResetView = true
 		}
+	}
+	
+	private var buttonSignInGoogle: some View {
+		MainButton(
+			title: "Продолжить с Google",
+			action: {authManager.signInWithGoogle(presentingViewController: self.getRootViewController())},
+			color: .mint
+		)
 	}
 	
 }

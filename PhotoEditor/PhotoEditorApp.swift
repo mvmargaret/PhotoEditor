@@ -4,15 +4,21 @@
 //
 //  Created by Margarita Mayer on 30/07/24.
 //
-
+import GoogleSignIn
 import SwiftUI
+import UIKit
 import FirebaseCore
+import Firebase
+
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
 				   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 	return true
   }
+	func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+		  return GIDSignIn.sharedInstance.handle(url)
+		}
 }
 
 @main

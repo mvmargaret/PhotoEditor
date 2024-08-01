@@ -8,26 +8,6 @@
 import Foundation
 import SwiftUI
 
-struct ButtonViewModifier: ViewModifier {
-	var color: Color
-	
-	func body(content: Content) -> some View {
-			content
-				.frame(maxWidth: .infinity)
-				.padding(.horizontal, 50)
-				.buttonBorderShape(.capsule)
-				.buttonStyle(.borderedProminent)
-				.tint(color)
-				
-	}
-}
-
-extension View {
-	func buttonStyle(color: Color) -> some View {
-		modifier(ButtonViewModifier(color: color))
-	}
-}
-
 struct MainButton: View {
 	let title: String
 	let action: () -> Void

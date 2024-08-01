@@ -4,8 +4,10 @@
 //
 //  Created by Margarita Mayer on 31/07/24.
 //
-
+import AuthenticationServices
+import GoogleSignIn
 import Foundation
+import Firebase
 import FirebaseAuth
 
 enum AuthState {
@@ -88,5 +90,44 @@ class AuthManager: ObservableObject {
 		Auth.auth().currentUser?.sendEmailVerification { error in
 			print("Coudnt send the link because the email is incorrect. Error: \(String(describing: error?.localizedDescription))")
 		}
+	}
+	
+	func signInWithGoogle(presentingViewController: UIViewController) {
+		guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+				
+		let config = GIDConfiguration(clientID: clientID)
+
+		GIDSignIn.sharedInstance.configuration = config
+				
+		GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { signResult, error in
+					
+			if let error = error {
+				print("Error with sign in Google: \(error.localizedDescription)")
+			   return
+			}
+					
+			 guard let user = signResult?.user,
+				   let idToken = user.idToken else { return }
+			 
+			 let accessToken = user.accessToken
+					
+			 let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+
+			// Use the credential to authenticate with Firebase
+			Auth.auth().signIn(with: credential) { authResult, error in
+				if let error = error {
+					print("Firebase sign-in error: \(error.localizedDescription)")
+				} else {
+					print("Successfully signed in with Google")
+				}
+			}
+
+		}
+
+	}
+	
+	func googleSignOut() {
+		GIDSignIn.sharedInstance.signOut()
+		print("Google sign out")
 	}
 }

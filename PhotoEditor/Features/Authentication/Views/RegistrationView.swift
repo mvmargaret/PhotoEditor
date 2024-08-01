@@ -15,24 +15,31 @@ struct RegistrationView: View {
     var body: some View {
 		VStack {
 			Form {
-				Section("Create account") {
+				Section("Зарегистрироваться") {
 					TextField("Email", text: $authManager.email)
 					SecureField("Password", text: $authManager.password)
 				}
 				
 				Section {
-					Button("Create account") {
-						authManager.createAccount { result in
-							switch result {
-							case .success():
-								print("account created")
-							case .failure(let error):
-								print("Error when created account: \(error.localizedDescription)")
-								isErrorPresented = true
-								currentError = error
+					
+					MainButton(
+						title: "Зарегистрироваться",
+						action: {
+							authManager.createAccount { result in
+								switch result {
+								case .success():
+									print("account created")
+								case .failure(let error):
+									print("Error when created account: \(error.localizedDescription)")
+									isErrorPresented = true
+									currentError = error
+								}
 							}
-						}
-					}
+						},
+						color: .cyan
+					)
+					.listRowInsets(.init())
+					.listRowBackground(Color.clear)
 				}
 			}
 		}
