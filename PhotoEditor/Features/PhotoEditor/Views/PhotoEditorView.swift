@@ -56,7 +56,7 @@ struct PhotoEditorView: View {
 					processedImage
 						.resizable()
 						.scaledToFit()
-					CanvasView(canvas: $photoViewModel.canvas, drawing: $photoViewModel.drawing, type: $photoViewModel.type, backgroundImage: $photoViewModel.backgroundUIImage, isToolPickerVisible: $photoViewModel.isToolPickerVisible)
+					CanvasView(canvas: $photoViewModel.drawingCanva.canvas, drawing: $photoViewModel.drawingCanva.drawing, type: $photoViewModel.drawingCanva.type, backgroundImage: $photoViewModel.backgroundUIImage, isToolPickerVisible: $photoViewModel.isToolPickerVisible)
 				}
 			} else {
 				ContentUnavailableView("Нет фото", systemImage: "photo.badge.plus", description: Text("Нажмите, чтобы загрузить фото"))
@@ -131,7 +131,7 @@ struct PhotoEditorView: View {
 		.disabled(photoViewModel.selectedItem == nil)
 		
 		Button(action: {
-			photoViewModel.toggleToolPicker(photoViewModel.canvas)
+			photoViewModel.toggleToolPicker(photoViewModel.drawingCanva.canvas)
 		}) {
 			Image(systemName: photoViewModel.isToolPickerVisible ? "pencil.slash"  : "pencil.and.outline")
 		}

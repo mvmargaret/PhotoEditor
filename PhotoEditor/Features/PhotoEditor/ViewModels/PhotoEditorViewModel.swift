@@ -24,10 +24,11 @@ final class PhotoEditorViewModel: ObservableObject {
 	private var currentRotationAngle: CGFloat = 0
 	
 	let toolPicker = PKToolPicker()
-	@Published var canvas = PKCanvasView()
-	@Published var drawing = false
-	@Published var color: Color = .black
-	@Published var type: PKInkingTool.InkType = .pen
+	@Published var drawingCanva = DrawingCanva()
+//	@Published var canvas = PKCanvasView()
+//	@Published var drawing = false
+//	@Published var color: Color = .black
+//	@Published var type: PKInkingTool.InkType = .pen
 	@Published var isToolPickerVisible = false
 	
 	
@@ -89,34 +90,34 @@ final class PhotoEditorViewModel: ObservableObject {
 		}
 	
 	func showToolPicker(_ canvasView: PKCanvasView) {
-		canvas = canvasView
-		toolPicker.setVisible(true, forFirstResponder: canvas)
-		toolPicker.addObserver(canvas)
+		drawingCanva.canvas = canvasView
+		toolPicker.setVisible(true, forFirstResponder: drawingCanva.canvas)
+		toolPicker.addObserver(drawingCanva.canvas)
 	  }
 
 	  func hideToolPicker() {
-		toolPicker.setVisible(false, forFirstResponder: canvas)
-		toolPicker.removeObserver(canvas)
+		  toolPicker.setVisible(false, forFirstResponder: drawingCanva.canvas)
+		  toolPicker.removeObserver(drawingCanva.canvas)
 	  }
 	
 	func toggleToolPicker(_ canvasView: PKCanvasView) {
 			isToolPickerVisible.toggle()
 			if isToolPickerVisible {
 				showToolPicker(canvasView)
-				drawing = true
+				drawingCanva.drawing = true
 			} else {
 				hideToolPicker()
-				drawing = false
+				drawingCanva.drawing = false
 			}
 		}
 	
 	func saveDrawnImage() {
 		guard let backgroundImage = backgroundUIImage else { return }
-		UIGraphicsBeginImageContextWithOptions(canvas.bounds.size, false, 0)
-		backgroundImage.draw(in: CGRect(origin: .zero, size: canvas.bounds.size))
+		UIGraphicsBeginImageContextWithOptions(drawingCanva.canvas.bounds.size, false, 0)
+		backgroundImage.draw(in: CGRect(origin: .zero, size: drawingCanva.canvas.bounds.size))
 		
 		if let context = UIGraphicsGetCurrentContext() {
-			canvas.drawing.image(from: canvas.bounds, scale: UIScreen.main.scale).draw(in: canvas.bounds)
+			drawingCanva.canvas.drawing.image(from: drawingCanva.canvas.bounds, scale: UIScreen.main.scale).draw(in: drawingCanva.canvas.bounds)
 		}
 		
 		if let combinedImage = UIGraphicsGetImageFromCurrentImageContext() {
