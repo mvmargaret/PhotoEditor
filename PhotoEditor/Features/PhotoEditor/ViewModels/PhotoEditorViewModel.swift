@@ -18,6 +18,7 @@ class PhotoEditorViewModel: ObservableObject {
 	@Published var currentFilter: CIFilter = CIFilter.sepiaTone()
 	let context = CIContext()
 	@Published var showingFilters = false
+	private var currentRotationAngle: CGFloat = 0
 	
 	func changeFilter() {
 		DispatchQueue.main.async {
@@ -61,4 +62,15 @@ class PhotoEditorViewModel: ObservableObject {
 			self.processedImage = Image(uiImage: uiImage)
 		}
 	}
+	
+	func rotateImage() {
+			currentRotationAngle += CGFloat.pi / 2
+			guard let outputImage = currentFilter.outputImage else { return }
+			let rotatedImage = outputImage.transformed(by: CGAffineTransform(rotationAngle: currentRotationAngle))
+			guard let cgImage = context.createCGImage(rotatedImage, from: rotatedImage.extent) else { return }
+			let uiImage = UIImage(cgImage: cgImage)
+			DispatchQueue.main.async {
+				self.processedImage = Image(uiImage: uiImage)
+			}
+		}
 }

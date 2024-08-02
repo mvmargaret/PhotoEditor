@@ -12,49 +12,34 @@ struct PhotoEditorView: View {
 	@EnvironmentObject var authManager: AuthManager
 	@StateObject var photoViewModel = PhotoEditorViewModel()
 	
-    var body: some View {
+	var body: some View {
 		NavigationStack {
 			VStack {
 				Spacer()
-
 				processedImage
-
 				Spacer()
-
+				intensitySlider
 				HStack {
-					Text("Интенсивность")
-					Slider(value: $photoViewModel.filterIntensity)
-						.onChange(of: photoViewModel.filterIntensity, photoViewModel.applyProcessing)
-				}
-				.padding(.vertical)
-
-				HStack {
-					Button("Фильтры") {
-						photoViewModel.changeFilter()
-					}
-
+					filters
 					Spacer()
-
+					rotateButton
+					Spacer()
 					shareLink
-				}
-				Button("Выйти") {
-					authManager.signOut()
-					authManager.googleSignOut()
 				}
 			}
 			.padding([.horizontal, .bottom])
 			.navigationTitle("PhotoEditor")
 			.confirmationDialog("Select a filter", isPresented: $photoViewModel.showingFilters) {
-				Button("Crystallize") {photoViewModel.setFilter(CIFilter.crystallize()) }
-				Button("Gaussian Blur") { photoViewModel.setFilter(CIFilter.gaussianBlur()) }
-				Button("Pixellate") { photoViewModel.setFilter(CIFilter.pixellate()) }
-				Button("Sepia Tone") { photoViewModel.setFilter(CIFilter.sepiaTone()) }
-				Button("Unsharp Mask") { photoViewModel.setFilter(CIFilter.unsharpMask()) }
-				Button("Vignette") { photoViewModel.setFilter(CIFilter.vignette()) }
-				Button("Cancel", role: .cancel) { }
+				filterButtons
+			}
+			.toolbar {
+				Button("Выйти") {
+					authManager.signOut()
+					authManager.googleSignOut()
+				}
 			}
 		}
-    }
+	}
 	
 	@ViewBuilder
 	private var processedImage: some View {
@@ -70,10 +55,45 @@ struct PhotoEditorView: View {
 		.onChange(of: photoViewModel.selectedItem, photoViewModel.loadImage)
 	}
 	
+	private var intensitySlider: some View {
+		HStack {
+			Text("Интенсивность")
+			Slider(value: $photoViewModel.filterIntensity)
+				.onChange(of: photoViewModel.filterIntensity, photoViewModel.applyProcessing)
+				.disabled(photoViewModel.selectedItem == nil)
+		}
+		.padding(.vertical)
+	}
+	
+	private var filters: some View {
+		Button("Фильтры") {
+			photoViewModel.changeFilter()
+		}
+		.disabled(photoViewModel.selectedItem == nil)
+	}
+	
 	@ViewBuilder
 	private var shareLink: some View {
 		if let processedImage = photoViewModel.processedImage {
 			ShareLink(item: processedImage, preview: SharePreview("Instafilter image", image: processedImage))
+		}
+	}
+	
+	private var filterButtons: some View {
+		Group {
+			Button("Crystallize") {photoViewModel.setFilter(CIFilter.crystallize()) }
+			Button("Gaussian Blur") { photoViewModel.setFilter(CIFilter.gaussianBlur()) }
+			Button("Pixellate") { photoViewModel.setFilter(CIFilter.pixellate()) }
+			Button("Sepia Tone") { photoViewModel.setFilter(CIFilter.sepiaTone()) }
+			Button("Unsharp Mask") { photoViewModel.setFilter(CIFilter.unsharpMask()) }
+			Button("Vignette") { photoViewModel.setFilter(CIFilter.vignette()) }
+			Button("Cancel", role: .cancel) { }
+		}
+	}
+	
+	private var rotateButton: some View {
+		Button("Повернуть") {
+			photoViewModel.rotateImage()
 		}
 	}
 }
