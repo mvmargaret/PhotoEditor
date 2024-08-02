@@ -33,10 +33,8 @@ final class AuthManager: ObservableObject {
 			DispatchQueue.main.async {
 				if user != nil {
 					self.authState = .signedIn
-					print("Auth state changed, is signed in")
 				} else {
 					self.authState = .signedOut
-					print("Auth state changed, is signed out")
 				}
 			}
 		}
@@ -47,7 +45,6 @@ final class AuthManager: ObservableObject {
 				print(error.localizedDescription)
 				completion(.failure(error))
 			} else {
-				print("successfully logged in user with email: \(self.email), password: \(self.password)")
 				completion(.success(()))
 			}
 		}
@@ -61,7 +58,6 @@ final class AuthManager: ObservableObject {
 			} else {
 				self.sendVerificationEmail()
 				completion(.success(()))
-				print("successfully created a new user with email: \(self.email), password: \(self.password)")
 			}
 		}
 	}
@@ -70,7 +66,6 @@ final class AuthManager: ObservableObject {
 		let firebaseAuth = Auth.auth()
 		do {
 		  try firebaseAuth.signOut()
-			print("User signed out")
 		} catch let signOutError as NSError {
 		  print("Error signing out: %@", signOutError)
 		}
@@ -89,7 +84,7 @@ final class AuthManager: ObservableObject {
 	
 	func sendVerificationEmail() {
 		Auth.auth().currentUser?.sendEmailVerification { error in
-			print("Coudnt send the link because the email is incorrect. Error: \(String(describing: error?.localizedDescription))")
+			print("Error: \(String(describing: error?.localizedDescription))")
 		}
 	}
 	
@@ -129,6 +124,5 @@ final class AuthManager: ObservableObject {
 	
 	func googleSignOut() {
 		GIDSignIn.sharedInstance.signOut()
-		print("Google sign out")
 	}
 }

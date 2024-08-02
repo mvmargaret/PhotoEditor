@@ -25,9 +25,8 @@ struct LogInWithEmailView: View {
 					action: { authManager.login { result in
 						switch result {
 						case .success():
-							print("success")
+							print("successfully log in with email")
 						case .failure(let error):
-							print("Error with sign in: \(error.localizedDescription)")
 							currentError = error
 							isErrorPresented = true
 						}

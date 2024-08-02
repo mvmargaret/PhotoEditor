@@ -31,8 +31,6 @@ struct CanvasView: UIViewRepresentable {
 	}
 	
 	func updateUIView(_ uiView: PKCanvasView, context: Context) {
-		print("called updateUView")
-		print("\(isToolPickerVisible)")
 		uiView.tool = drawing ? ink : eraser
 		updateBackgroundImage(on: canvas)
 	}

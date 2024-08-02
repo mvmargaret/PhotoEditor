@@ -30,7 +30,6 @@ struct RegistrationView: View {
 								case .success():
 									print("account created")
 								case .failure(let error):
-									print("Error when created account: \(error.localizedDescription)")
 									isErrorPresented = true
 									currentError = error
 								}

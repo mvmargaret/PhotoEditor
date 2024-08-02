@@ -48,7 +48,6 @@ struct PasswordResetView: View {
 							case .failure(let error):
 								isErrorPresented = true
 								currentError = error
-								print("Error with reset password: \(error.localizedDescription)")
 							}
 						}
 					},
