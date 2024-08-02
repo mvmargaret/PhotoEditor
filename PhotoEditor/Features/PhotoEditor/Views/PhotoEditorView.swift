@@ -6,20 +6,69 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct PhotoEditorView: View {
 	@EnvironmentObject var authManager: AuthManager
+	@StateObject var photoViewModel = PhotoEditorViewModel()
+	
     var body: some View {
-		VStack {
-			Text("There will be a photo editor view")
-				.foregroundStyle(.red)
-			
-			Button("Sign out") {
-				authManager.signOut()
-				authManager.googleSignOut()
+		NavigationStack {
+			VStack {
+				Spacer()
+
+				processedImage
+
+				Spacer()
+
+				HStack {
+					Text("Интенсивность")
+					Slider(value: $photoViewModel.filterIntensity)
+						.onChange(of: photoViewModel.filterIntensity, photoViewModel.applyProcessing)
+				}
+				.padding(.vertical)
+
+				HStack {
+					Button("Фильтры") {
+						photoViewModel.changeFilter()
+					}
+
+					Spacer()
+
+					// share the picture
+				}
+				Button("Выйти") {
+					authManager.signOut()
+					authManager.googleSignOut()
+				}
+			}
+			.padding([.horizontal, .bottom])
+			.navigationTitle("PhotoEditor")
+			.confirmationDialog("Select a filter", isPresented: $photoViewModel.showingFilters) {
+				Button("Crystallize") {photoViewModel.setFilter(CIFilter.crystallize()) }
+				Button("Gaussian Blur") { photoViewModel.setFilter(CIFilter.gaussianBlur()) }
+				Button("Pixellate") { photoViewModel.setFilter(CIFilter.pixellate()) }
+				Button("Sepia Tone") { photoViewModel.setFilter(CIFilter.sepiaTone()) }
+				Button("Unsharp Mask") { photoViewModel.setFilter(CIFilter.unsharpMask()) }
+				Button("Vignette") { photoViewModel.setFilter(CIFilter.vignette()) }
+				Button("Cancel", role: .cancel) { }
 			}
 		}
     }
+	
+	@ViewBuilder
+	private var processedImage: some View {
+		PhotosPicker(selection: $photoViewModel.selectedItem) {
+			if let  processedImage = photoViewModel.processedImage {
+				processedImage
+					.resizable()
+					.scaledToFit()
+			} else {
+				ContentUnavailableView("Нет фото", systemImage: "photo.badge.plus", description: Text("Нажмите, чтобы загрузить фото"))
+			}
+		}
+		.onChange(of: photoViewModel.selectedItem, photoViewModel.loadImage)
+	}
 }
 
 #Preview {

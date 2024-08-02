@@ -29,6 +29,7 @@
 		1C91ED932C5C0B0B00519265 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1C91ED922C5C0B0B00519265 /* GoogleSignIn */; };
 		1C91ED952C5C0B0B00519265 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1C91ED942C5C0B0B00519265 /* GoogleSignInSwift */; };
 		1C91ED972C5C0E0800519265 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1C91ED962C5C0E0800519265 /* GoogleService-Info.plist */; };
+		1C91ED9F2C5CACD100519265 /* PhotoEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C91ED9E2C5CACD100519265 /* PhotoEditorViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		1C91ED8A2C5BA52200519265 /* View + Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extentions.swift"; sourceTree = "<group>"; };
 		1C91ED8D2C5BE7B900519265 /* ButtonViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonViewModifier.swift; sourceTree = "<group>"; };
 		1C91ED962C5C0E0800519265 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1C91ED9E2C5CACD100519265 /* PhotoEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,8 @@
 		1C91ED732C5A004A00519265 /* PhotoEditor */ = {
 			isa = PBXGroup;
 			children = (
+				1C91ED9D2C5CA9D100519265 /* Model */,
+				1C91ED9C2C5CA9C500519265 /* ViewModels */,
 				1C91ED7D2C5A04E800519265 /* Views */,
 			);
 			path = PhotoEditor;
@@ -201,6 +205,21 @@
 				1C91ED8D2C5BE7B900519265 /* ButtonViewModifier.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		1C91ED9C2C5CA9C500519265 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1C91ED9E2C5CACD100519265 /* PhotoEditorViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		1C91ED9D2C5CA9D100519265 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,6 +317,7 @@
 				1C91ED872C5B7D5F00519265 /* PasswordResetView.swift in Sources */,
 				1C91ED7F2C5A04F600519265 /* PhotoEditorView.swift in Sources */,
 				1C91ED852C5A28FC00519265 /* RegistrationView.swift in Sources */,
+				1C91ED9F2C5CACD100519265 /* PhotoEditorViewModel.swift in Sources */,
 				1C91ED8B2C5BA52200519265 /* View + Extentions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
