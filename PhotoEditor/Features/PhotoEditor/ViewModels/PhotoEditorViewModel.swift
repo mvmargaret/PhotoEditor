@@ -70,6 +70,7 @@ final class PhotoEditorViewModel: ObservableObject {
 		let uiImage = UIImage(cgImage: cgImage)
 		DispatchQueue.main.async {
 			self.processedImage = Image(uiImage: uiImage)
+			self.backgroundUIImage = uiImage
 		}
 	}
 	
@@ -81,6 +82,7 @@ final class PhotoEditorViewModel: ObservableObject {
 			let uiImage = UIImage(cgImage: cgImage)
 			DispatchQueue.main.async {
 				self.processedImage = Image(uiImage: uiImage)
+				self.backgroundUIImage = uiImage
 			}
 		}
 	
@@ -120,6 +122,7 @@ final class PhotoEditorViewModel: ObservableObject {
 			
 			DispatchQueue.main.async {
 				self.processedImage = Image(uiImage: combinedImage)
+				self.backgroundUIImage = combinedImage
 			}
 		}
 	}
