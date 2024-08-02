@@ -50,27 +50,27 @@ struct PhotoEditorView: View {
 	
 	@ViewBuilder
 	private var processedImage: some View {
-		PhotosPicker(selection: $photoViewModel.selectedItem) {
-			if let  processedImage = photoViewModel.processedImage {
+		PhotosPicker(selection: $photoViewModel.editableImage.selectedItem) {
+			if let  processedImage = photoViewModel.editableImage.backgroundImage {
 				ZStack {
 					processedImage
 						.resizable()
 						.scaledToFit()
-					CanvasView(canvas: $photoViewModel.drawingCanva.canvas, drawing: $photoViewModel.drawingCanva.drawing, type: $photoViewModel.drawingCanva.type, backgroundImage: $photoViewModel.backgroundUIImage, isToolPickerVisible: $photoViewModel.isToolPickerVisible)
+					CanvasView(canvas: $photoViewModel.drawingCanva.canvas, drawing: $photoViewModel.drawingCanva.drawing, type: $photoViewModel.drawingCanva.type, backgroundImage: $photoViewModel.editableImage.backgroundUIImage, isToolPickerVisible: $photoViewModel.isToolPickerVisible)
 				}
 			} else {
 				ContentUnavailableView("Нет фото", systemImage: "photo.badge.plus", description: Text("Нажмите, чтобы загрузить фото"))
 			}
 		}
-		.onChange(of: photoViewModel.selectedItem, photoViewModel.loadImage)
+		.onChange(of: photoViewModel.editableImage.selectedItem, photoViewModel.loadImage)
 	}
 	
 	private var intensitySlider: some View {
 		HStack {
 			Text("Интенсивность")
-			Slider(value: $photoViewModel.filterIntensity)
-				.onChange(of: photoViewModel.filterIntensity, photoViewModel.applyProcessing)
-				.disabled(photoViewModel.selectedItem == nil)
+			Slider(value: $photoViewModel.editableImage.filterIntensity)
+				.onChange(of: photoViewModel.editableImage.filterIntensity, photoViewModel.applyProcessing)
+				.disabled(photoViewModel.editableImage.selectedItem == nil)
 		}
 		.padding(.vertical)
 	}
@@ -79,12 +79,12 @@ struct PhotoEditorView: View {
 		Button("Фильтры") {
 			photoViewModel.changeFilter()
 		}
-		.disabled(photoViewModel.selectedItem == nil)
+		.disabled(photoViewModel.editableImage.selectedItem == nil)
 	}
 	
 	@ViewBuilder
 	private var shareLink: some View {
-		if let processedImage = photoViewModel.processedImage {
+		if let processedImage = photoViewModel.editableImage.backgroundImage {
 			ShareLink(item: processedImage, preview: SharePreview("Instafilter image", image: processedImage))
 		} else {
 			HStack {
@@ -111,7 +111,7 @@ struct PhotoEditorView: View {
 		Button("Повернуть") {
 			photoViewModel.rotateImage()
 		}
-		.disabled(photoViewModel.selectedItem == nil)
+		.disabled(photoViewModel.editableImage.selectedItem == nil)
 	}
 	
 	@ViewBuilder
@@ -119,23 +119,23 @@ struct PhotoEditorView: View {
 		Button("Save")  {
 			photoViewModel.saveDrawnImage()
 		}
-		.disabled(photoViewModel.selectedItem == nil)
+		.disabled(photoViewModel.editableImage.selectedItem == nil)
 		Button { undoManager?.undo() } label: {
 			Image(systemName: "arrow.uturn.backward.circle")
 		}
-		.disabled(photoViewModel.selectedItem == nil)
+		.disabled(photoViewModel.editableImage.selectedItem == nil)
 		
 		Button { undoManager?.redo() } label: {
 			Image(systemName: "arrow.uturn.forward.circle")
 		}
-		.disabled(photoViewModel.selectedItem == nil)
+		.disabled(photoViewModel.editableImage.selectedItem == nil)
 		
 		Button(action: {
 			photoViewModel.toggleToolPicker(photoViewModel.drawingCanva.canvas)
 		}) {
 			Image(systemName: photoViewModel.isToolPickerVisible ? "pencil.slash"  : "pencil.and.outline")
 		}
-		.disabled(photoViewModel.selectedItem == nil)
+		.disabled(photoViewModel.editableImage.selectedItem == nil)
 	}
 }
 

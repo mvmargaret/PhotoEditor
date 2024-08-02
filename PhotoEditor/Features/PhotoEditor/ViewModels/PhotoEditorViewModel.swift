@@ -14,15 +14,15 @@ import SwiftUI
 
 
 final class PhotoEditorViewModel: ObservableObject {
-	@Published var processedImage: Image?
-	@Published var filterIntensity = 0.5
-	@Published var selectedItem: PhotosPickerItem?
-	@Published var currentFilter: CIFilter = CIFilter.sepiaTone()
+//	@Published var backgroundImage: Image?
+//	@Published var filterIntensity = 0.5
+//	@Published var selectedItem: PhotosPickerItem?
+//	@Published var currentFilter: CIFilter = CIFilter.sepiaTone()
 	@Published var showingFilters = false
-	@Published var backgroundUIImage: UIImage?
+//	@Published var backgroundUIImage: UIImage?
 	let context = CIContext()
 	private var currentRotationAngle: CGFloat = 0
-	
+	@Published var editableImage = EditableImage()
 	@Published var drawingCanva = DrawingCanva()
 	@Published var isToolPickerVisible = false
 	
@@ -36,7 +36,7 @@ final class PhotoEditorViewModel: ObservableObject {
 	
 	func setFilter(_ filter: CIFilter) {
 		DispatchQueue.main.async {
-			self.currentFilter = filter
+			self.editableImage.currentFilter = filter
 		}
 		loadImage()
 	}
@@ -44,13 +44,13 @@ final class PhotoEditorViewModel: ObservableObject {
 	
 	func loadImage() {
 		Task {
-			guard let imageData = try await selectedItem?.loadTransferable(type: Data.self) else { return }
+			guard let imageData = try await editableImage.selectedItem?.loadTransferable(type: Data.self) else { return }
 			guard let inputImage = UIImage(data: imageData) else { return }
 
 			let beginImage = CIImage(image: inputImage)
-			currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+			editableImage.currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
 			DispatchQueue.main.async {
-				self.backgroundUIImage = inputImage
+				self.editableImage.backgroundUIImage = inputImage
 			}
 			applyProcessing()
 		}
@@ -58,31 +58,31 @@ final class PhotoEditorViewModel: ObservableObject {
 	
 	
 	func applyProcessing() {
-		let inputKeys = self.currentFilter.inputKeys
+		let inputKeys = self.editableImage.currentFilter.inputKeys
 		
-		if inputKeys.contains(kCIInputIntensityKey) { self.currentFilter.setValue(self.filterIntensity, forKey: kCIInputIntensityKey) }
-		if inputKeys.contains(kCIInputRadiusKey) { self.currentFilter.setValue(self.filterIntensity * 200, forKey: kCIInputRadiusKey) }
-		if inputKeys.contains(kCIInputScaleKey) { self.currentFilter.setValue(self.filterIntensity * 10, forKey: kCIInputScaleKey) }
+		if inputKeys.contains(kCIInputIntensityKey) { self.editableImage.currentFilter.setValue(self.editableImage.filterIntensity, forKey: kCIInputIntensityKey) }
+		if inputKeys.contains(kCIInputRadiusKey) { self.editableImage.currentFilter.setValue(self.editableImage.filterIntensity * 200, forKey: kCIInputRadiusKey) }
+		if inputKeys.contains(kCIInputScaleKey) { self.editableImage.currentFilter.setValue(self.editableImage.filterIntensity * 10, forKey: kCIInputScaleKey) }
 		
-		guard let outputImage = self.currentFilter.outputImage else { return }
+		guard let outputImage = self.editableImage.currentFilter.outputImage else { return }
 		guard let cgImage = self.context.createCGImage(outputImage, from: outputImage.extent) else { return }
 		
 		let uiImage = UIImage(cgImage: cgImage)
 		DispatchQueue.main.async {
-			self.processedImage = Image(uiImage: uiImage)
-			self.backgroundUIImage = uiImage
+			self.editableImage.backgroundImage = Image(uiImage: uiImage)
+			self.editableImage.backgroundUIImage = uiImage
 		}
 	}
 	
 	func rotateImage() {
 			currentRotationAngle += CGFloat.pi / 2
-			guard let outputImage = currentFilter.outputImage else { return }
+		guard let outputImage = editableImage.currentFilter.outputImage else { return }
 			let rotatedImage = outputImage.transformed(by: CGAffineTransform(rotationAngle: currentRotationAngle))
 			guard let cgImage = context.createCGImage(rotatedImage, from: rotatedImage.extent) else { return }
 			let uiImage = UIImage(cgImage: cgImage)
 			DispatchQueue.main.async {
-				self.processedImage = Image(uiImage: uiImage)
-				self.backgroundUIImage = uiImage
+				self.editableImage.backgroundImage = Image(uiImage: uiImage)
+				self.editableImage.backgroundUIImage = uiImage
 			}
 		}
 	
@@ -109,9 +109,9 @@ final class PhotoEditorViewModel: ObservableObject {
 		}
 	
 	func saveDrawnImage() {
-		guard let backgroundImage = backgroundUIImage else { return }
+		guard let backgroundUIImage = editableImage.backgroundUIImage else { return }
 		UIGraphicsBeginImageContextWithOptions(drawingCanva.canvas.bounds.size, false, 0)
-		backgroundImage.draw(in: CGRect(origin: .zero, size: drawingCanva.canvas.bounds.size))
+		backgroundUIImage.draw(in: CGRect(origin: .zero, size: drawingCanva.canvas.bounds.size))
 		
 		if let context = UIGraphicsGetCurrentContext() {
 			drawingCanva.canvas.drawing.image(from: drawingCanva.canvas.bounds, scale: UIScreen.main.scale).draw(in: drawingCanva.canvas.bounds)
@@ -121,8 +121,8 @@ final class PhotoEditorViewModel: ObservableObject {
 			UIGraphicsEndImageContext()
 			
 			DispatchQueue.main.async {
-				self.processedImage = Image(uiImage: combinedImage)
-				self.backgroundUIImage = combinedImage
+				self.editableImage.backgroundImage = Image(uiImage: combinedImage)
+				self.editableImage.backgroundUIImage = combinedImage
 			}
 		}
 	}

@@ -32,6 +32,7 @@
 		1C91ED9F2C5CACD100519265 /* PhotoEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C91ED9E2C5CACD100519265 /* PhotoEditorViewModel.swift */; };
 		1C91EDA12C5CD73700519265 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C91EDA02C5CD73700519265 /* CanvasView.swift */; };
 		1C96297D2C5D2A9C0030ACD0 /* DrawingCanva.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C96297C2C5D2A9C0030ACD0 /* DrawingCanva.swift */; };
+		1C96297F2C5D34950030ACD0 /* EditableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C96297E2C5D34950030ACD0 /* EditableImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		1C91ED9E2C5CACD100519265 /* PhotoEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewModel.swift; sourceTree = "<group>"; };
 		1C91EDA02C5CD73700519265 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		1C96297C2C5D2A9C0030ACD0 /* DrawingCanva.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCanva.swift; sourceTree = "<group>"; };
+		1C96297E2C5D34950030ACD0 /* EditableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				1C96297C2C5D2A9C0030ACD0 /* DrawingCanva.swift */,
+				1C96297E2C5D34950030ACD0 /* EditableImage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				1C91ED812C5A05BE00519265 /* ContentView.swift in Sources */,
 				1C91ED1B2C59358100519265 /* PhotoEditorApp.swift in Sources */,
 				1C96297D2C5D2A9C0030ACD0 /* DrawingCanva.swift in Sources */,
+				1C96297F2C5D34950030ACD0 /* EditableImage.swift in Sources */,
 				1C91ED772C5A017400519265 /* User.swift in Sources */,
 				1C91ED8E2C5BE7B900519265 /* ButtonViewModifier.swift in Sources */,
 				1C91ED872C5B7D5F00519265 /* PasswordResetView.swift in Sources */,
