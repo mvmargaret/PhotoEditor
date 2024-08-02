@@ -23,12 +23,7 @@ final class PhotoEditorViewModel: ObservableObject {
 	let context = CIContext()
 	private var currentRotationAngle: CGFloat = 0
 	
-	let toolPicker = PKToolPicker()
 	@Published var drawingCanva = DrawingCanva()
-//	@Published var canvas = PKCanvasView()
-//	@Published var drawing = false
-//	@Published var color: Color = .black
-//	@Published var type: PKInkingTool.InkType = .pen
 	@Published var isToolPickerVisible = false
 	
 	
@@ -91,13 +86,13 @@ final class PhotoEditorViewModel: ObservableObject {
 	
 	func showToolPicker(_ canvasView: PKCanvasView) {
 		drawingCanva.canvas = canvasView
-		toolPicker.setVisible(true, forFirstResponder: drawingCanva.canvas)
-		toolPicker.addObserver(drawingCanva.canvas)
+		drawingCanva.toolPicker.setVisible(true, forFirstResponder: drawingCanva.canvas)
+		drawingCanva.toolPicker.addObserver(drawingCanva.canvas)
 	  }
 
 	  func hideToolPicker() {
-		  toolPicker.setVisible(false, forFirstResponder: drawingCanva.canvas)
-		  toolPicker.removeObserver(drawingCanva.canvas)
+		  drawingCanva.toolPicker.setVisible(false, forFirstResponder: drawingCanva.canvas)
+		  drawingCanva.toolPicker.removeObserver(drawingCanva.canvas)
 	  }
 	
 	func toggleToolPicker(_ canvasView: PKCanvasView) {

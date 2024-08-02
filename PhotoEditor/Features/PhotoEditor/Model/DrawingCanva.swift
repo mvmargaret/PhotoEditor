@@ -14,4 +14,5 @@ struct DrawingCanva {
 	var drawing = false
 	var color: Color = .black
 	var type: PKInkingTool.InkType = .pen
+	let toolPicker = PKToolPicker()
 }
