@@ -30,6 +30,7 @@
 		1C91ED952C5C0B0B00519265 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1C91ED942C5C0B0B00519265 /* GoogleSignInSwift */; };
 		1C91ED972C5C0E0800519265 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1C91ED962C5C0E0800519265 /* GoogleService-Info.plist */; };
 		1C91ED9F2C5CACD100519265 /* PhotoEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C91ED9E2C5CACD100519265 /* PhotoEditorViewModel.swift */; };
+		1C91EDA12C5CD73700519265 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C91EDA02C5CD73700519265 /* CanvasView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		1C91ED8D2C5BE7B900519265 /* ButtonViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonViewModifier.swift; sourceTree = "<group>"; };
 		1C91ED962C5C0E0800519265 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1C91ED9E2C5CACD100519265 /* PhotoEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewModel.swift; sourceTree = "<group>"; };
+		1C91EDA02C5CD73700519265 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +122,6 @@
 			children = (
 				1C91ED962C5C0E0800519265 /* GoogleService-Info.plist */,
 				1C91ED1E2C59358200519265 /* Assets.xcassets */,
-				1C91ED8A2C5BA52200519265 /* View + Extentions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -158,7 +159,6 @@
 				1C91ED6E2C59FFFE00519265 /* Services */,
 				1C91ED782C5A017D00519265 /* Models */,
 				1C91ED792C5A018C00519265 /* Views */,
-				1C91ED7A2C5A019700519265 /* ViewModels */,
 				1C91ED8C2C5BE79200519265 /* Components */,
 			);
 			path = Authentication;
@@ -175,6 +175,7 @@
 		1C91ED792C5A018C00519265 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1C91ED8A2C5BA52200519265 /* View + Extentions.swift */,
 				1C91ED802C5A05BE00519265 /* ContentView.swift */,
 				1C91ED1C2C59358100519265 /* LoginView.swift */,
 				1C91ED822C5A12B500519265 /* LogInWithEmailView.swift */,
@@ -184,17 +185,11 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		1C91ED7A2C5A019700519265 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		1C91ED7D2C5A04E800519265 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				1C91ED7E2C5A04F600519265 /* PhotoEditorView.swift */,
+				1C91EDA02C5CD73700519265 /* CanvasView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -309,6 +304,7 @@
 			files = (
 				1C91ED1D2C59358100519265 /* LoginView.swift in Sources */,
 				1C91ED832C5A12B500519265 /* LogInWithEmailView.swift in Sources */,
+				1C91EDA12C5CD73700519265 /* CanvasView.swift in Sources */,
 				1C91ED7C2C5A049700519265 /* AuthManager.swift in Sources */,
 				1C91ED812C5A05BE00519265 /* ContentView.swift in Sources */,
 				1C91ED1B2C59358100519265 /* PhotoEditorApp.swift in Sources */,
@@ -456,6 +452,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PhotoEditor/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your library to upload a photo.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -486,6 +483,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PhotoEditor/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your library to upload a photo.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

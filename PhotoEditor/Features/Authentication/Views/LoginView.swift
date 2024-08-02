@@ -17,6 +17,11 @@ struct LoginView: View {
 	
     var body: some View {
 		VStack {
+			Spacer()
+			Image("welcome")
+				.resizable()
+				.scaledToFit()
+			Spacer()
 			buttonSignInGoogle
 			buttonLoginEmail
 			buttonResetPassword
@@ -41,7 +46,8 @@ struct LoginView: View {
 			action: {
 				isShowLoginWithEmailView = true
 			},
-			color: .cyan
+			color: .purple.opacity(0.9),
+			image: "envelope"
 		)
 	}
 	
@@ -63,7 +69,8 @@ struct LoginView: View {
 		MainButton(
 			title: "Продолжить с Google",
 			action: {authManager.signInWithGoogle(presentingViewController: self.getRootViewController())},
-			color: .mint
+			color: .indigo.opacity(0.8),
+			logo: "google"
 		)
 	}
 	

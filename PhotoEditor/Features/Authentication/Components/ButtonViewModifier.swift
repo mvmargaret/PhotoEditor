@@ -13,10 +13,25 @@ struct MainButton: View {
 	let action: () -> Void
 	let color: Color
 	let width = UIScreen.main.bounds.width
+	var image: String? = nil
+	var logo: String? = nil
 
 	var body: some View {
 		Button(action: action) {
-			Text(title)
+			HStack {
+				if let image = image {
+					Image(systemName: image)
+				}
+				if let logo = logo {
+					Image("\(logo)")
+						.resizable()
+						.scaledToFit()
+						.frame(width: 25, height: 25)
+				}
+				Spacer()
+				Text(title)
+				Spacer()
+			}
 			.frame(maxWidth: .infinity)
 			.font(.system(.title3, design: .rounded))
 			.padding(EdgeInsets(top: width * 0.03, leading: width * 0.1, bottom: width * 0.03, trailing: width * 0.1))

@@ -9,13 +9,14 @@ import GoogleSignIn
 import Foundation
 import Firebase
 import FirebaseAuth
+import FirebaseCore
 
 enum AuthState {
 	case signedIn
 	case signedOut
 }
 
-class AuthManager: ObservableObject {
+final class AuthManager: ObservableObject {
 //	@Published var user: User?
 	@Published var authState = AuthState.signedOut
 	@Published var email = ""

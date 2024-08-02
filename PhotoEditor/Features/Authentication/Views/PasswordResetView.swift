@@ -52,7 +52,7 @@ struct PasswordResetView: View {
 							}
 						}
 					},
-					color: .cyan
+					color: .indigo.opacity(08)
 				)
 			}
 			.listRowInsets(.init())

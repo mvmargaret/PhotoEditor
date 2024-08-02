@@ -4,21 +4,32 @@
 //
 //  Created by Margarita Mayer on 02/08/24.
 //
+import Combine
 import CoreImage
 import CoreImage.CIFilterBuiltins
 import Foundation
+import PencilKit
 import PhotosUI
 import SwiftUI
 
 
-class PhotoEditorViewModel: ObservableObject {
+final class PhotoEditorViewModel: ObservableObject {
 	@Published var processedImage: Image?
 	@Published var filterIntensity = 0.5
 	@Published var selectedItem: PhotosPickerItem?
 	@Published var currentFilter: CIFilter = CIFilter.sepiaTone()
-	let context = CIContext()
 	@Published var showingFilters = false
+	@Published var backgroundUIImage: UIImage?
+	let context = CIContext()
 	private var currentRotationAngle: CGFloat = 0
+	
+	let toolPicker = PKToolPicker()
+	@Published var canvas = PKCanvasView()
+	@Published var drawing = false
+	@Published var color: Color = .black
+	@Published var type: PKInkingTool.InkType = .pen
+	@Published var isToolPickerVisible = false
+	
 	
 	func changeFilter() {
 		DispatchQueue.main.async {
@@ -42,6 +53,9 @@ class PhotoEditorViewModel: ObservableObject {
 
 			let beginImage = CIImage(image: inputImage)
 			currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+			DispatchQueue.main.async {
+				self.backgroundUIImage = inputImage
+			}
 			applyProcessing()
 		}
 	}
@@ -73,4 +87,45 @@ class PhotoEditorViewModel: ObservableObject {
 				self.processedImage = Image(uiImage: uiImage)
 			}
 		}
+	
+	func showToolPicker(_ canvasView: PKCanvasView) {
+		canvas = canvasView
+		toolPicker.setVisible(true, forFirstResponder: canvas)
+		toolPicker.addObserver(canvas)
+	  }
+
+	  func hideToolPicker() {
+		toolPicker.setVisible(false, forFirstResponder: canvas)
+		toolPicker.removeObserver(canvas)
+	  }
+	
+	func toggleToolPicker(_ canvasView: PKCanvasView) {
+			isToolPickerVisible.toggle()
+			if isToolPickerVisible {
+				showToolPicker(canvasView)
+				drawing = true
+			} else {
+				hideToolPicker()
+				drawing = false
+			}
+		}
+	
+	func saveDrawnImage() {
+		guard let backgroundImage = backgroundUIImage else { return }
+		UIGraphicsBeginImageContextWithOptions(canvas.bounds.size, false, 0)
+		backgroundImage.draw(in: CGRect(origin: .zero, size: canvas.bounds.size))
+		
+		if let context = UIGraphicsGetCurrentContext() {
+			canvas.drawing.image(from: canvas.bounds, scale: UIScreen.main.scale).draw(in: canvas.bounds)
+		}
+		
+		if let combinedImage = UIGraphicsGetImageFromCurrentImageContext() {
+			UIGraphicsEndImageContext()
+			
+			DispatchQueue.main.async {
+				self.processedImage = Image(uiImage: combinedImage)
+			}
+		}
+	}
+
 }

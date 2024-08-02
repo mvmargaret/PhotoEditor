@@ -6,18 +6,20 @@
 //
 
 import SwiftUI
+import PencilKit
 import PhotosUI
 
 struct PhotoEditorView: View {
 	@EnvironmentObject var authManager: AuthManager
+	@Environment(\.undoManager) var undoManager
 	@StateObject var photoViewModel = PhotoEditorViewModel()
-	
+		
 	var body: some View {
 		NavigationStack {
 			VStack {
 				Spacer()
 				processedImage
-				Spacer()
+							Spacer()
 				intensitySlider
 				HStack {
 					filters
@@ -33,9 +35,14 @@ struct PhotoEditorView: View {
 				filterButtons
 			}
 			.toolbar {
-				Button("Выйти") {
-					authManager.signOut()
-					authManager.googleSignOut()
+				ToolbarItem(placement: .topBarTrailing) {
+					Button("Выйти") {
+						authManager.signOut()
+						authManager.googleSignOut()
+					}
+				}
+				ToolbarItemGroup {
+					drawingButtons
 				}
 			}
 		}
@@ -45,9 +52,12 @@ struct PhotoEditorView: View {
 	private var processedImage: some View {
 		PhotosPicker(selection: $photoViewModel.selectedItem) {
 			if let  processedImage = photoViewModel.processedImage {
-				processedImage
-					.resizable()
-					.scaledToFit()
+				ZStack {
+					processedImage
+						.resizable()
+						.scaledToFit()
+					CanvasView(canvas: $photoViewModel.canvas, drawing: $photoViewModel.drawing, type: $photoViewModel.type, backgroundImage: $photoViewModel.backgroundUIImage, isToolPickerVisible: $photoViewModel.isToolPickerVisible)
+				}
 			} else {
 				ContentUnavailableView("Нет фото", systemImage: "photo.badge.plus", description: Text("Нажмите, чтобы загрузить фото"))
 			}
@@ -76,6 +86,12 @@ struct PhotoEditorView: View {
 	private var shareLink: some View {
 		if let processedImage = photoViewModel.processedImage {
 			ShareLink(item: processedImage, preview: SharePreview("Instafilter image", image: processedImage))
+		} else {
+			HStack {
+				Image(systemName: "square.and.arrow.up")
+				Text("Share...")
+			}
+			.foregroundStyle(.gray.opacity(0.6))
 		}
 	}
 	
@@ -95,6 +111,31 @@ struct PhotoEditorView: View {
 		Button("Повернуть") {
 			photoViewModel.rotateImage()
 		}
+		.disabled(photoViewModel.selectedItem == nil)
+	}
+	
+	@ViewBuilder
+	private var drawingButtons: some View {
+		Button("Save")  {
+			photoViewModel.saveDrawnImage()
+		}
+		.disabled(photoViewModel.selectedItem == nil)
+		Button { undoManager?.undo() } label: {
+			Image(systemName: "arrow.uturn.backward.circle")
+		}
+		.disabled(photoViewModel.selectedItem == nil)
+		
+		Button { undoManager?.redo() } label: {
+			Image(systemName: "arrow.uturn.forward.circle")
+		}
+		.disabled(photoViewModel.selectedItem == nil)
+		
+		Button(action: {
+			photoViewModel.toggleToolPicker(photoViewModel.canvas)
+		}) {
+			Image(systemName: photoViewModel.isToolPickerVisible ? "pencil.slash"  : "pencil.and.outline")
+		}
+		.disabled(photoViewModel.selectedItem == nil)
 	}
 }
 
