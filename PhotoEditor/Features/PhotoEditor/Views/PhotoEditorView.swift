@@ -35,7 +35,7 @@ struct PhotoEditorView: View {
 
 					Spacer()
 
-					// share the picture
+					shareLink
 				}
 				Button("Выйти") {
 					authManager.signOut()
@@ -68,6 +68,13 @@ struct PhotoEditorView: View {
 			}
 		}
 		.onChange(of: photoViewModel.selectedItem, photoViewModel.loadImage)
+	}
+	
+	@ViewBuilder
+	private var shareLink: some View {
+		if let processedImage = photoViewModel.processedImage {
+			ShareLink(item: processedImage, preview: SharePreview("Instafilter image", image: processedImage))
+		}
 	}
 }
 
