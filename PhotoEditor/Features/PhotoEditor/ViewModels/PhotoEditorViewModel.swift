@@ -14,17 +14,12 @@ import SwiftUI
 
 
 final class PhotoEditorViewModel: ObservableObject {
-//	@Published var backgroundImage: Image?
-//	@Published var filterIntensity = 0.5
-//	@Published var selectedItem: PhotosPickerItem?
-//	@Published var currentFilter: CIFilter = CIFilter.sepiaTone()
 	@Published var showingFilters = false
-//	@Published var backgroundUIImage: UIImage?
-	let context = CIContext()
-	private var currentRotationAngle: CGFloat = 0
 	@Published var editableImage = EditableImage()
 	@Published var drawingCanva = DrawingCanva()
 	@Published var isToolPickerVisible = false
+	let context = CIContext()
+	private var currentRotationAngle: CGFloat = 0
 	
 	
 	func changeFilter() {
